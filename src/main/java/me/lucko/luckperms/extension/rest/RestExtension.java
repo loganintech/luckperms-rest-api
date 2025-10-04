@@ -43,12 +43,13 @@ public class RestExtension implements Extension {
     @Override
     public void load() {
         int port = RestConfig.getInteger("http.port", 8080);
+        String address = RestConfig.getString("http.address", "localhost");
 
         Thread thread = Thread.currentThread();
         ClassLoader previousCtxClassLoader = thread.getContextClassLoader();
         thread.setContextClassLoader(RestExtension.class.getClassLoader());
         try {
-            this.server = new RestServer(this.luckPerms, port);
+            this.server = new RestServer(this.luckPerms, address, port);
         } finally {
             thread.setContextClassLoader(previousCtxClassLoader);
         }

@@ -72,19 +72,19 @@ public class RestServer implements AutoCloseable {
     private final Javalin app;
     private final AutoCloseable routesClosable;
 
-    public RestServer(LuckPerms luckPerms, int port) {
+    public RestServer(LuckPerms luckPerms, String address, int port) {
         LOGGER.info("[REST] Starting server...");
 
         this.objectMapper = new CustomObjectMapper();
 
         this.app = Javalin.create(this::configure)
-                .start(port);
+                .start(address, port);
 
         this.setupLogging(this.app);
         this.setupErrorHandlers(this.app);
         this.routesClosable = this.setupRoutes(this.app, luckPerms);
 
-        LOGGER.info("[REST] Startup complete! Listening on http://localhost:" + port);
+        LOGGER.info(String.format("[REST] Startup complete! Listening on http://%s:%d", address, port));
     }
 
     @Override
